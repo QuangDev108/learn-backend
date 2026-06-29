@@ -6,7 +6,7 @@ mixin table-tree(records, level = 1)
                 input(
                     type="checkbox"
                     name="id"
-                    value=item._id
+                    value=item.id
                 )
 
             td #{item.index}
@@ -36,7 +36,7 @@ mixin table-tree(records, level = 1)
                     a(
                         href="javascript:;"
                         data-status=item.status
-                        data-id=item._id
+                        data-id=item.id
                         button-change-status
                         class="btn btn-success"
                     ) Hoạt động
@@ -44,26 +44,26 @@ mixin table-tree(records, level = 1)
                     a(
                         href="javascript:;"
                         data-status=item.status
-                        data-id=item._id
+                        data-id=item.id
                         button-change-status
                         class="btn btn-danger"
                     ) Dừng hoạt động
 
             td
                 a(
-                    href=`${prefixAdmin}/products-category/detail/${item._id}`
+                    href=`${prefixAdmin}/products-category/detail/${item.id}`
                     class="btn btn-secondary btn-sm"
                 ) Chi tiết
 
                 a(
-                    href=`${prefixAdmin}/products-category/edit/${item._id}`
+                    href=`${prefixAdmin}/products-category/edit/${item.id}`
                     class="btn btn-warning btn-sm ms-1"
                 ) Sửa
 
                 button(
                     class="btn btn-danger btn-sm ms-1"
                     button-delete
-                    data-id=item._id
+                    data-id=item.id
                 ) Xóa
 
         if item.children && item.children.length > 0
