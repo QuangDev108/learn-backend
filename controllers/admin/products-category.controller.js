@@ -8,7 +8,7 @@ module.exports.index = async (req, res) => {
         deleted: false,
     };
 
-    const records = await ProductCategory.find(find).lean(); // ✅
+    const records = await ProductCategory.find(find);
     const newRecords = createTreeHelper.tree(records);
 
     res.render("admin/pages/products-category/index", {
@@ -23,7 +23,7 @@ module.exports.create = async (req, res) => {
     deleted: false,
     };
 
-    const records = await ProductCategory.find(find).lean(); // ✅
+    const records = await ProductCategory.find(find);
     const newRecords = createTreeHelper.tree(records);
     console.log(newRecords);
 
@@ -56,10 +56,9 @@ module.exports.edit = async (req, res) => {
     const data = await ProductCategory.findOne({
         _id: id, 
         deleted: false
-    }).lean();
+    });
 
     res.render("admin/pages/products-category/edit", {
         pageTitle: "Chỉnh sửa danh mục sản phẩm",
-        data: data
     });
 };
