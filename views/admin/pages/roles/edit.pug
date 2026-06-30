@@ -1,0 +1,36 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  h1.mb-4 Chỉnh sửa nhóm quyền
+
+  +alert-success(5000)
+  +alert-error(5000)
+
+  form(
+    action=`${prefixAdmin}/roles/edit/${data.id}?_method=PATCH`
+    method="POST"
+  )
+    .form-group
+      label(for="title") Tiêu đề
+      input.form-control(
+        type="text"
+        id="title"
+        name="title"
+        required
+        value=data.title
+      )
+
+    .form-group
+      label(for="description") Mô tả
+      input.form-control(
+        type="text"
+        id="description"
+        name="description"
+        value=data.description
+      )
+
+    .form-group
+      button.btn.btn-primary(
+        type="submit"
+      ) Cập nhật
