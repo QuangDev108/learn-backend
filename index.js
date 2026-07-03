@@ -6,6 +6,7 @@ const flash = require('express-flash');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
+const moment = require('moment');
 dotenv.config();
 
 const db = require('./config/database');
@@ -35,6 +36,7 @@ app.use(flash());
 app.use('/tinymce', express.static(`${__dirname}/node_modules/tinymce`));
 
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
+app.locals.moment = moment;
 
 app.use(express.static(`${__dirname}/public`));
 

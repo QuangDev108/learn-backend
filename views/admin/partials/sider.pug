@@ -9,9 +9,6 @@
                     a(href=`${prefixAdmin}/products-category`) Danh mục Sản phẩm
             if(role.permissions.includes('products_view'))
                 li 
-                    a(href=`${prefixAdmin}/products`) Sản phẩm
-            if(role.permissions.includes('products_list_view'))
-                li 
                     a(href=`${prefixAdmin}/products`) Danh sách Sản phẩm
             if(role.permissions.includes('roles_view'))
                 li 
