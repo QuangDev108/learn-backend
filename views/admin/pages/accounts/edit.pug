@@ -2,123 +2,124 @@ extends ../../layouts/default.pug
 include ../../mixins/alert.pug
 
 block main
-    h1.mb-4 Cập nhật tài khoản
+    if(role.permissions.includes('accounts_edit'))
+        h1.mb-4 Cập nhật tài khoản
 
-    +alert-success(5000)
-    +alert-error(5000)
+        +alert-success(5000)
+        +alert-error(5000)
 
-    if roles
-        form(
-            action=`${prefixAdmin}/accounts/edit/${data._id}?_method=PATCH`
-            method="POST"
-            enctype="multipart/form-data"
-        )
+        if roles
+            form(
+                action=`${prefixAdmin}/accounts/edit/${data._id}?_method=PATCH`
+                method="POST"
+                enctype="multipart/form-data"
+            )
 
-            .mb-3
-                label.form-label(for="fullName")
-                    | Họ tên
-                    span.text-danger *
-                input.form-control(
-                    type="text"
-                    id="fullName"
-                    name="fullName"
-                    required
-                    value=data.fullName
-                )
-
-            .mb-3
-                label.form-label(for="email")
-                    | Email
-                    span.text-danger *
-                input.form-control(
-                    type="email"
-                    id="email"
-                    name="email"
-                    required
-                    value=data.email
-                )
-
-            .mb-3
-                label.form-label(for="password") Mật khẩu
-                input.form-control(
-                    type="password"
-                    id="password"
-                    name="password"
-                )
-
-            .mb-3
-                label.form-label(for="phone") Số điện thoại
-                input.form-control(
-                    type="text"
-                    id="phone"
-                    name="phone"
-                    value=data.phone
-                )
-
-            div.mb-3(upload-image)
-                label.form-label(for="avatar") Avatar
-
-                input.form-control(
-                    type="file"
-                    id="avatar"
-                    name="avatar"
-                    accept="image/*"
-                    upload-image-input
-                )
-
-                br
-
-                img(
-                    src=data.avatar
-                    width="120"
-                    class="image-preview border rounded"
-                    upload-image-preview
-                )
-
-            .mb-3
-                label.form-label(for="role_id") Phân quyền
-
-                select.form-select(
-                    id="role_id"
-                    name="role_id"
-                )
-                    option(disabled) -- Chọn --
-
-                    each item in roles
-                        option(
-                            value=item.id
-                            selected=(item.id == data.role_id)
-                        ) #{item.title}
-
-            .mb-3
-                .form-check.form-check-inline
-                    input.form-check-input(
-                        type="radio"
-                        id="statusActive"
-                        name="status"
-                        value="active"
-                        checked=(data.status=="active")
+                .mb-3
+                    label.form-label(for="fullName")
+                        | Họ tên
+                        span.text-danger *
+                    input.form-control(
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        required
+                        value=data.fullName
                     )
-                    label.form-check-label(for="statusActive") Hoạt động
 
-                .form-check.form-check-inline
-                    input.form-check-input(
-                        type="radio"
-                        id="statusInactive"
-                        name="status"
-                        value="inactive"
-                        checked=(data.status=="inactive")
+                .mb-3
+                    label.form-label(for="email")
+                        | Email
+                        span.text-danger *
+                    input.form-control(
+                        type="email"
+                        id="email"
+                        name="email"
+                        required
+                        value=data.email
                     )
-                    label.form-check-label(for="statusInactive") Dừng hoạt động
 
-            button.btn.btn-primary(type="submit")
-                | Cập nhật
+                .mb-3
+                    label.form-label(for="password") Mật khẩu
+                    input.form-control(
+                        type="password"
+                        id="password"
+                        name="password"
+                    )
 
-    else
-        p Vui lòng tạo nhóm quyền trước khi cập nhật tài khoản
+                .mb-3
+                    label.form-label(for="phone") Số điện thoại
+                    input.form-control(
+                        type="text"
+                        id="phone"
+                        name="phone"
+                        value=data.phone
+                    )
 
-        p
-            a(
-                href=`${prefixAdmin}/roles/create`
-                class="btn btn-secondary"
-            ) Tạo nhóm quyền
+                div.mb-3(upload-image)
+                    label.form-label(for="avatar") Avatar
+
+                    input.form-control(
+                        type="file"
+                        id="avatar"
+                        name="avatar"
+                        accept="image/*"
+                        upload-image-input
+                    )
+
+                    br
+
+                    img(
+                        src=data.avatar
+                        width="120"
+                        class="image-preview border rounded"
+                        upload-image-preview
+                    )
+
+                .mb-3
+                    label.form-label(for="role_id") Phân quyền
+
+                    select.form-select(
+                        id="role_id"
+                        name="role_id"
+                    )
+                        option(disabled) -- Chọn --
+
+                        each item in roles
+                            option(
+                                value=item.id
+                                selected=(item.id == data.role_id)
+                            ) #{item.title}
+
+                .mb-3
+                    .form-check.form-check-inline
+                        input.form-check-input(
+                            type="radio"
+                            id="statusActive"
+                            name="status"
+                            value="active"
+                            checked=(data.status=="active")
+                        )
+                        label.form-check-label(for="statusActive") Hoạt động
+
+                    .form-check.form-check-inline
+                        input.form-check-input(
+                            type="radio"
+                            id="statusInactive"
+                            name="status"
+                            value="inactive"
+                            checked=(data.status=="inactive")
+                        )
+                        label.form-check-label(for="statusInactive") Dừng hoạt động
+
+                button.btn.btn-primary(type="submit")
+                    | Cập nhật
+
+        else
+            p Vui lòng tạo nhóm quyền trước khi cập nhật tài khoản
+
+            p
+                a(
+                    href=`${prefixAdmin}/roles/create`
+                    class="btn btn-secondary"
+                ) Tạo nhóm quyền
