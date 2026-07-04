@@ -35,6 +35,35 @@ block main
 
                     if(category)
                         +select-tree(category)
+
+            div(class="mt-3 mb-3")
+                div(class="form-check form-check-inline me-3")
+                    input(
+                        type="radio"
+                        class="form-check-input"
+                        id="featured1"
+                        name="featured"
+                        value="1"
+                    )
+                    label(
+                        for="featured1"
+                        class="form-check-label"
+                    ) Nổi bật
+
+                div(class="form-check form-check-inline")
+                    input(
+                        type="radio"
+                        class="form-check-input"
+                        id="featured0"
+                        name="featured"
+                        value="0"
+                        checked
+                    )
+                    label(
+                        for="featured0"
+                        class="form-check-label"
+                    ) Không
+
             div(class="form-group")
                 label(for="desc") Mô tả
                 textarea(

@@ -1,12 +1,18 @@
-header.header
-  .container-fluid
-    .row.align-items-center
-      .col-3
-        .inner-logo
-          a(href="/admin/dashboard") ADMIN
+.header
+    .container-fluid
+        .row.align-items-center
+            .col-3
+                .inner-logo
+                    a(href=`${prefixAdmin}/dashboard`) ADMIN
 
-      .col-9
-        .text-end
-          a.btn.btn-danger.btn-sm(
-            href=`${prefixAdmin}/auth/logout`
-          ) Đăng xuất
+            .col-9
+                .text-end
+                    a(
+                        href=`${prefixAdmin}/my-account`
+                        class="btn btn-primary btn-sm me-2"
+                    ) #{user.fullName}
+
+                    a(
+                        href=`${prefixAdmin}/auth/logout`
+                        class="btn btn-danger btn-sm"
+                    ) Đăng xuất
