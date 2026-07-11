@@ -6,5 +6,12 @@ module.exports.createPost = (req,res,next) => {
         return;
     }
 
+    if (req.body.title.length < 5) {
+        req.flash("error", "Tiêu đề dài tối thiểu là 5 ký tự!");
+        return res.redirect(req.get("Referrer") || "/");
+    }
+
+    next();
+
     next();
 }
