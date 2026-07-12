@@ -1,0 +1,32 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+    +alert-error(5000)
+
+    .container.my-5
+        .row.justify-content-center
+            .col-8
+                h1.text-center Đăng nhập tài khoản
+
+                form(action="/user/login" method="POST")
+                    .mb-3
+                        label.form-label(for="email") Email
+                        input.form-control(
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                        )
+
+                    .mb-3
+                        label.form-label(for="password") Mật khẩu
+                        input.form-control(
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                        )
+
+                    button.btn.btn-primary.w-100(type="submit")
+                        | Đăng nhập
