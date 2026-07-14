@@ -42,3 +42,15 @@ module.exports.loginPost = (req,res,next) => {
     next();
 
 }
+
+module.exports.forgotPasswordPost = (req,res,next) => {
+    if(!req.body.email) {
+        console.log(req.body);
+        req.flash("error", `email ko dc để trống `);
+        res.redirect(req.get("Referrer") || "/");
+        return;
+    }
+
+    next();
+
+}
