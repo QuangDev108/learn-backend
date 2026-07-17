@@ -43,6 +43,11 @@ app.use(express.static(`${__dirname}/public`));
 //Routes
 routeAdmin(app);
 routes(app);
+app.use((req, res) => {
+    res.status(404).render("client/pages/errors/404", {
+        pageTitle: "404 Not Found",
+    });
+});
 
 app.listen(port, () => {  
   console.log(`Server đang chạy tại http://localhost:${port}`);
