@@ -7,6 +7,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const moment = require('moment');
+const http = require("http");
+const { Server } = require("socket.io");
 dotenv.config();
 
 const db = require('./config/database');
@@ -24,6 +26,14 @@ app.use(methodOverride('_method'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('views', `${__dirname}/views`);
 app.set('view engine', 'pug');
+
+//SocketIO
+const server = http.createServer(app); 
+const io = new Server(server);
+global._io = io;
+
+
+//End SocketIO
 
 
 //Flash
@@ -49,6 +59,6 @@ app.use((req, res) => {
     });
 });
 
-app.listen(port, () => {  
+server.listen(port, () => {  
   console.log(`Server đang chạy tại http://localhost:${port}`);
 });

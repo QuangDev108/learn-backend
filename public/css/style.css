@@ -249,3 +249,120 @@
   cursor: pointer;
 }
 /* End Show Alert */
+
+/* ===== Chat ===== */
+
+.chat {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.chat .inner-body {
+    padding: 15px;
+    height: 450px;
+    overflow-y: auto;
+    background: #fff;
+}
+
+/* Tin nhắn đến */
+.chat .inner-incoming {
+    max-width: 70%;
+    margin-bottom: 15px;
+}
+
+.chat .inner-incoming .inner-name {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+}
+
+.chat .inner-incoming .inner-content {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #f1f1f1;
+    border-radius: 18px;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Tin nhắn gửi */
+.chat .inner-outgoing {
+    max-width: 70%;
+    margin-left: auto;
+    margin-bottom: 15px;
+    text-align: right;
+}
+
+.chat .inner-outgoing .inner-content {
+    display: inline-block;
+    padding: 10px 15px;
+    background: #fe5da3;
+    color: #fff;
+    border-radius: 18px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Footer */
+.chat .inner-foot {
+    border-top: 1px solid #ddd;
+    padding: 10px;
+    background: #fff;
+}
+
+.chat .inner-form {
+    display: flex;
+    align-items: center;
+}
+
+.chat .inner-form input {
+    flex: 1;
+    height: 40px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 0 15px;
+    outline: none;
+    font-size: 15px;
+}
+
+.chat .inner-form input:focus {
+    border-color: #fe5da3;
+}
+
+.chat .inner-form button {
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 50%;
+    background: #fe5da3;
+    color: #fff;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.chat .inner-form button:hover {
+    background: #f54090;
+}
+
+.chat .inner-form button i {
+    font-size: 16px;
+}
+
+/* Scrollbar */
+.chat .inner-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.chat .inner-body::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.chat .inner-body::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+/* ===== End Chat ===== */
