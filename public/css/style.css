@@ -364,5 +364,15 @@
 .chat .inner-body::-webkit-scrollbar-thumb:hover {
     background: #999;
 }
-
 /* ===== End Chat ===== */
+
+/* emoji-picker */
+.tooltip {
+    visibility: hidden;
+}
+
+.tooltip.show {
+    visibility: visible;
+    opacity: 1;
+}
+/* End emoji-picker */
