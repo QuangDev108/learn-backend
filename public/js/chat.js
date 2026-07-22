@@ -1,5 +1,15 @@
 import * as Popper from "https://cdn.jsdelivr.net/npm/@popperjs/core@2/dist/esm/index.js";
 
+// FileUploadWithPreview
+const upload = new FileUploadWithPreview.FileUploadWithPreview(
+    "upload-image",
+    {
+        multiple: true,
+        maxFileCount: 6
+    }
+);
+// End FileUploadWithPreview
+
 // CLIENT_SEND_MESSAGE
 const formSendData = document.querySelector(".chat .inner-form");
 
@@ -8,11 +18,15 @@ if (formSendData) {
         e.preventDefault();
 
         const content = e.target.elements.content.value;
+        const images = upload.cachedFileArray || [];
 
-        if (content) {
+        if (content || images.length > 0) {
+            // Gửi content hoặc ảnh lên server
+            console.log(images);
+
             socket.emit("CLIENT_SEND_MESSAGE", content);
+
             e.target.elements.content.value = "";
-            
             socket.emit("CLIENT_SEND_TYPING", "hidden");
         }
     });
