@@ -10,7 +10,7 @@ block main
 
         .row
             .col-12
-                .chat(my-id=user.id)
+                .chat(my-id=user.id, my-fullname=user.fullName)
 
                     .inner-body
                         each chat in chats
@@ -18,8 +18,13 @@ block main
                                 if (chat.infoUser.id != user.id)
                                     .inner-name= chat.infoUser.fullName
 
-                                .inner-content
-                                    | #{chat.content}
+                                if(chat.content)
+                                    .inner-content
+                                        | #{chat.content}
+                                if(chat.images)
+                                    .inner-images
+                                        each image in chat.images
+                                            img(src=image)
                         
                         div(class="inner-list-typing")
 

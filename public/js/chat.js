@@ -14,20 +14,56 @@ const upload = new FileUploadWithPreview.FileUploadWithPreview(
 const formSendData = document.querySelector(".chat .inner-form");
 
 if (formSendData) {
-    formSendData.addEventListener("submit", (e) => {
+    formSendData.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const content = e.target.elements.content.value;
-        const images = upload.cachedFileArray || [];
+        const userId = document.querySelector("[my-id]").getAttribute("my-id");
+        const fullName = document.querySelector("[my-fullname]")?.getAttribute("my-fullname") || "Người dùng";
+        const images = [];
 
-        if (content || images.length > 0) {
-            // Gửi content hoặc ảnh lên server
-            console.log(images);
+        // Convert files sang base64 string (sử dụng Promise)
+        const convertFilesToBase64 = async () => {
+            const promises = upload.cachedFileArray.map(file => {
+                return new Promise((resolve, reject) => {
+                    try {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(event) {
+                            resolve(event.target.result); // base64 string
+                        };
+                        
+                        reader.onerror = function() {
+                            reject(new Error("Lỗi đọc file"));
+                        };
+                        
+                        reader.readAsDataURL(file);
+                    } catch (error) {
+                        reject(error);
+                    }
+                });
+            });
+            
+            return Promise.all(promises);
+        };
 
-            socket.emit("CLIENT_SEND_MESSAGE", content);
+        try {
+            // Chờ tất cả files được convert xong
+            const convertedImages = await convertFilesToBase64();
+            images.push(...convertedImages);
+
+            socket.emit("CLIENT_SEND_MESSAGE", {
+                content,
+                images,
+                userId,
+                fullName,
+                room_chat_id: "general"
+            });
 
             e.target.elements.content.value = "";
-            socket.emit("CLIENT_SEND_TYPING", "hidden");
+            upload.resetPreviewPanel();
+        } catch (error) {
+            console.error("Lỗi khi convert file:", error);
         }
     });
 }
@@ -42,7 +78,10 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
     const body = document.querySelector(".chat .inner-body");
     const div = document.createElement("div");
     const boxTyping = document.querySelector(".inner-list-typing");
+
     let htmlFullName = "";
+    let htmlContent = "";
+    let htmlImages = "";
 
     if (myId == data.userId) {
         div.classList.add("inner-outgoing");
@@ -51,10 +90,31 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
         htmlFullName = `<div class="inner-name">${data.fullName}</div>`;
     }
 
+
+    if (data.content) {
+        htmlContent = `
+            <div class="inner-content">${data.content}</div>
+        `;
+    }
+
+    if (data.images) {
+        htmlImages += `<div class="inner-images">`;
+
+        for (const image of data.images) {
+            htmlImages += `
+                <img src="${image}">
+            `;
+        }
+
+        htmlImages += `</div>`;
+    }
+
     div.innerHTML = `
         ${htmlFullName}
-        <div class="inner-content">${data.content}</div>
+        ${htmlContent}
+        ${htmlImages}
     `;
+
     body.insertBefore(div, boxTyping);
     bodyChat.scrollTop = bodyChat.scrollHeight;
 });
@@ -73,12 +133,23 @@ if (bodyChat) {
 var timeOut;
 
 const showTyping = () => {
-    socket.emit("CLIENT_SEND_TYPING", "show");
+    const userId = document.querySelector("[my-id]").getAttribute("my-id");
+    const fullName = document.querySelector("[my-fullname]")?.getAttribute("my-fullname") || "Người dùng";
+    
+    socket.emit("CLIENT_SEND_TYPING", {
+        userId,
+        fullName,
+        type: "show"
+    });
 
     clearTimeout(timeOut);
 
     timeOut = setTimeout(() => {
-        socket.emit("CLIENT_SEND_TYPING", "hidden");
+        socket.emit("CLIENT_SEND_TYPING", {
+            userId,
+            fullName,
+            type: "hidden"
+        });
     }, 3000);
 };
 // End Show Typing
