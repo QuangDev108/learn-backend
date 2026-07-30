@@ -90,7 +90,6 @@ socket.on("SERVER_RETURN_MESSAGE", (data) => {
         htmlFullName = `<div class="inner-name">${data.fullName}</div>`;
     }
 
-
     if (data.content) {
         htmlContent = `
             <div class="inner-content">${data.content}</div>
