@@ -3,8 +3,6 @@ const uploadToCloudinary = require('../../helpers/uploadToCloudinary');
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
-        console.log('User kết nối (socket):', socket.id);
-
         socket.on('CLIENT_SEND_MESSAGE', async (data) => {
             try {
                 console.log('Dữ liệu nhận được từ client:', {
@@ -46,8 +44,6 @@ module.exports = (io) => {
                     }
                 }
 
-                console.log('Các ảnh sau khi upload:', images);
-
                 // Lưu vào database
                 const chat = new Chat({
                     user_id: userId,
@@ -83,10 +79,6 @@ module.exports = (io) => {
                 fullName: data.fullName,
                 type: data.type,
             });
-        });
-
-        socket.on('disconnect', () => {
-            console.log('User ngắt kết nối (socket):', socket.id);
         });
     });
 };
