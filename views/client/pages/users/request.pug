@@ -3,16 +3,17 @@ include ../../mixins/box-head.pug
 
 block main
     .container.my-3
+
         include ../../partials/list-btn-users.pug
 
         .row
             .col-12
-                +box-head("Danh sách người dùng")
+                +box-head("Lời mời đã gửi")
 
         .row
             each user in users
                 .col-6
-                    .box-user
+                    .box-user.add
                         .inner-avatar
                             img(
                                 src=user.avatar ? user.avatar : "/images/avatar.png"
@@ -33,5 +34,5 @@ block main
                                     btn-cancel-friend=user.id
                                 ) Hủy
 
-    block script
-        script(type="module" src="/js/users.js")
+block script
+    script(src="/js/users.js")
