@@ -131,5 +131,65 @@ module.exports = (res) => {
                 );
             }
         });
+
+        // Người dùng chấp nhận kết bạn
+        socket.on("CLIENT_ACCEPT_FRIEND", async (userId) => {
+            const myUserId = res.locals.user.id;
+
+            // console.log(myUserId); // Id của B
+            // console.log(userId);   // Id của A
+
+            // Thêm { user_id, room_chat_id } của A vào friendsList của B
+            // Xóa id của A trong acceptFriends của B
+            const existUserAInB = await User.findOne({
+                _id: myUserId,
+                acceptFriends: userId
+            });
+
+            if (existUserAInB) {
+                await User.updateOne(
+                    {
+                        _id: myUserId
+                    },
+                    {
+                        $push: {
+                            friendList: {
+                                user_id: userId,
+                                room_chat_id: ""
+                            }
+                        },
+                        $pull: {
+                            acceptFriends: userId
+                        }
+                    }
+                );
+            }
+
+            // Thêm { user_id, room_chat_id } của B vào friendsList của A
+            // Xóa id của B trong requestFriends của A
+            const existUserBInA = await User.findOne({
+                _id: userId,
+                requestFriends: myUserId
+            });
+
+            if (existUserBInA) {
+                await User.updateOne(
+                    {
+                        _id: userId
+                    },
+                    {
+                        $push: {
+                            friendList: {
+                                user_id: myUserId,
+                                room_chat_id: ""
+                            }
+                        },
+                        $pull: {
+                            requestFriends: myUserId
+                        }
+                    }
+                );
+            }
+        });
     });
 };
