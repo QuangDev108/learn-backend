@@ -1,7 +1,7 @@
 const User = require("../../models/user.model");
 
 module.exports = (res) => {
-    _io.on("connection", (socket) => {
+    _io.once("connection", (socket) => {
         // Lắng nghe sự kiện CLIENT_ADD_FRIEND từ client (yêu cầu kết bạn)
         socket.on("CLIENT_ADD_FRIEND", async (userId) => {
             const myUserId = res.locals.user.id;
@@ -80,6 +80,52 @@ module.exports = (res) => {
                     {
                         $pull: {
                             requestFriends: userId
+                        }
+                    }
+                );
+            }
+        });
+
+        // Người dùng từ chối kết bạn
+        socket.on("CLIENT_REFUSE_FRIEND", async (userId) => {
+            const myUserId = res.locals.user.id;
+
+            // console.log(myUserId); // Id của B
+            // console.log(userId); // Id của A
+
+            // Xóa id của A trong acceptFriends của B
+            const existUserInAInB = await User.findOne({
+                _id: myUserId,
+                acceptFriends: userId
+            });
+
+            if (existUserInAInB) {
+                await User.updateOne(
+                    {
+                        _id: myUserId
+                    },
+                    {
+                        $pull: {
+                            acceptFriends: userId
+                        }
+                    }
+                );
+            }
+
+            // Xóa id của B trong requestFriends của A
+            const existUserBInA = await User.findOne({
+                _id: userId,
+                requestFriends: myUserId
+            });
+
+            if (existUserBInA) {
+                await User.updateOne(
+                    {
+                        _id: userId
+                    },
+                    {
+                        $pull: {
+                            requestFriends: myUserId
                         }
                     }
                 );
