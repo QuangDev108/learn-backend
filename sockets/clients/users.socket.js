@@ -54,6 +54,16 @@ module.exports = (res) => {
                 userId: userId,
                 lengthAcceptFriends: lengthAcceptFriends
             });
+
+            // Lấy thông tin của A trả về cho B
+            const infoUserA = await User.findOne({
+                _id: myUserId
+            }).select("id avatar fullName");
+
+            socket.broadcast.emit("SERVER_RETURN_INFO_ACCEPT_FRIEND", {
+                userId: userId,
+                infoUserA: infoUserA
+            });
         });
 
         // Lắng nghe sự kiện CLIENT_CANCEL_FRIEND từ client (hủy yêu cầu kết bạn)
@@ -96,6 +106,18 @@ module.exports = (res) => {
                     }
                 );
             }
+
+            // Lấy độ dài acceptFriends của B trả về cho B
+            const infoUser = await User.findOne({
+                _id: userId
+            });
+
+            const lengthAcceptFriends = infoUser.acceptFriends.length;
+
+            socket.broadcast.emit("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", {
+                userId: userId,
+                lengthAcceptFriends: lengthAcceptFriends
+            });
         });
 
         // Người dùng từ chối kết bạn
