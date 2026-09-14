@@ -88,101 +88,125 @@ socket.on("SERVER_RETURN_LENGTH_ACCEPT_FRIEND", (data) => {
 // SERVER_RETURN_INFO_ACCEPT_FRIEND
 // ==============================
 socket.on("SERVER_RETURN_INFO_ACCEPT_FRIEND", (data) => {
+    //Trang lời mời kết bạn
     const dataUsersAccept = document.querySelector("[data-users-accept]");
+    
+    if(dataUsersAccept) {
+        const userId = dataUsersAccept.getAttribute("data-users-accept");
 
-    const userId = dataUsersAccept.getAttribute("data-users-accept");
+        // Kiểm tra đúng người nhận là B
+        if (userId === data.userId) {
+            //Vẽ user giao diện
+            const newBoxUser = document.createElement("div");
 
-    console.log("DATA INFO:", data);
-    console.log("MY USER ID:", userId);
-    console.log("USER A:", data.infoUserA);
+            newBoxUser.classList.add("col-6");
+            newBoxUser.setAttribute("user-id", data.infoUserA._id);
 
-    // Kiểm tra đúng người nhận là B
-    if (userId === data.userId) {
-        //Vẽ user giao diện
-        const newBoxUser = document.createElement("div");
+            newBoxUser.innerHTML = `
+                <div class="box-user">
 
-        newBoxUser.classList.add("col-6");
-        newBoxUser.setAttribute("user-id", data.infoUserA._id);
-
-        newBoxUser.innerHTML = `
-            <div class="box-user">
-
-                <div class="inner-avatar">
-                    <img
-                        src="/images/avatar.png"
-                        alt="${data.infoUserA.fullName}"
-                    >
-                </div>
-
-                <div class="inner-info">
-
-                    <div class="inner-name">
-                        ${data.infoUserA.fullName}
+                    <div class="inner-avatar">
+                        <img
+                            src="/images/avatar.png"
+                            alt="${data.infoUserA.fullName}"
+                        >
                     </div>
 
-                    <div class="inner-buttons">
+                    <div class="inner-info">
 
-                        <button
-                            class="btn btn-sm btn-primary me-1"
-                            btn-accept-friend="${data.infoUserA._id}"
-                        >
-                            Chấp nhận
-                        </button>
+                        <div class="inner-name">
+                            ${data.infoUserA.fullName}
+                        </div>
 
-                        <button
-                            class="btn btn-sm btn-secondary me-1"
-                            btn-refuse-friend="${data.infoUserA._id}"
-                        >
-                            Xóa
-                        </button>
+                        <div class="inner-buttons">
 
-                        <button
-                            class="btn btn-sm btn-secondary me-1"
-                            btn-deleted-friend="btn-deleted-friend"
-                            disabled
-                        >
-                            Đã xoá
-                        </button>
+                            <button
+                                class="btn btn-sm btn-primary me-1"
+                                btn-accept-friend="${data.infoUserA._id}"
+                            >
+                                Chấp nhận
+                            </button>
 
-                        <button
-                            class="btn btn-sm btn-primary me-1"
-                            btn-accepted-friend="btn-accepted-friend"
-                            disabled
-                        >
-                            Đã chấp nhận
-                        </button>
+                            <button
+                                class="btn btn-sm btn-secondary me-1"
+                                btn-refuse-friend="${data.infoUserA._id}"
+                            >
+                                Xóa
+                            </button>
 
+                            <button
+                                class="btn btn-sm btn-secondary me-1"
+                                btn-deleted-friend="btn-deleted-friend"
+                                disabled
+                            >
+                                Đã xoá
+                            </button>
+
+                            <button
+                                class="btn btn-sm btn-primary me-1"
+                                btn-accepted-friend="btn-accepted-friend"
+                                disabled
+                            >
+                                Đã chấp nhận
+                            </button>
+
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
+            `;
 
-        dataUsersAccept.appendChild(newBoxUser);
+            dataUsersAccept.appendChild(newBoxUser);
 
-        // Xóa lời mời kết bạn
-        const btnRefuseFriend = newBoxUser.querySelector("[btn-refuse-friend]");
+            // Xóa lời mời kết bạn
+            const btnRefuseFriend = newBoxUser.querySelector("[btn-refuse-friend]");
 
-        btnRefuseFriend.addEventListener("click", () => {
-            btnRefuseFriend.closest(".box-user").classList.add("refuse");
+            btnRefuseFriend.addEventListener("click", () => {
+                btnRefuseFriend.closest(".box-user").classList.add("refuse");
 
-            const userId = btnRefuseFriend.getAttribute("btn-refuse-friend");
+                const userId = btnRefuseFriend.getAttribute("btn-refuse-friend");
 
-            socket.emit("CLIENT_REFUSE_FRIEND", userId);
-        });
-        // Hết Xóa lời mời kết bạn
+                socket.emit("CLIENT_REFUSE_FRIEND", userId);
+            });
+            // Hết Xóa lời mời kết bạn
 
-        // Chấp nhận lời mời kết bạn
-        const btnAcceptFriend = newBoxUser.querySelector("[btn-accept-friend]");
+            // Chấp nhận lời mời kết bạn
+            const btnAcceptFriend = newBoxUser.querySelector("[btn-accept-friend]");
 
-        btnAcceptFriend.addEventListener("click", () => {
-            btnAcceptFriend.closest(".box-user").classList.add("accepted");
+            btnAcceptFriend.addEventListener("click", () => {
+                btnAcceptFriend.closest(".box-user").classList.add("accepted");
 
-            const userId = btnAcceptFriend.getAttribute("btn-accept-friend");
+                const userId = btnAcceptFriend.getAttribute("btn-accept-friend");
 
-            socket.emit("CLIENT_ACCEPT_FRIEND", userId);
-        });
-        // Hết Chấp nhận lời mời kết bạn
+                socket.emit("CLIENT_ACCEPT_FRIEND", userId);
+            });
+            // Hết Chấp nhận lời mời kết bạn
+        }
     }
+    //Hết Trang lời mời kết bạn
+
+    // Trang danh sách người dùng
+    const dataUsersNotFriend = document.querySelector(
+        "[data-users-not-friend]"
+    );
+
+    if (dataUsersNotFriend) {
+        const userId = dataUsersNotFriend.getAttribute(
+            "data-users-not-friend"
+        );
+
+        if (userId === data.userId) {
+            // Xóa A khỏi danh sách của B
+            const boxUserRemove = dataUsersNotFriend.querySelector(
+                `[user-id="${data.infoUserA._id}"]`
+            );
+
+            if (boxUserRemove) {
+                dataUsersNotFriend.removeChild(boxUserRemove);
+            }
+        }
+    }
+
+    // Hết Trang danh sách người dùng
 });
 // End SERVER_RETURN_INFO_ACCEPT_FRIEND
 
