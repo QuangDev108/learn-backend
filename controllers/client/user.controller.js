@@ -83,6 +83,10 @@ module.exports.loginPost = async (req, res) => {
         }
     );
 
+    _io.once("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_USER_ONLINE", user.id);
+    });
+
     // Lưu user_id vào collection carts
     await Cart.updateOne(
         {
@@ -106,6 +110,10 @@ module.exports.logout = async (req, res) => {
             statusOnline: "offline"
         }
     );
+
+    _io.on("connection", (socket) => {
+        socket.broadcast.emit("SERVER_RETURN_USER_OFFLINE", res.locals.user.id);
+    });
 
     res.clearCookie("tokenUser");
     res.redirect("/");

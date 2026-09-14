@@ -555,7 +555,7 @@
     opacity: 0;
 }
 
-.box-user .inner-status[status-user="online"] {
+.box-user .inner-status[status="online"] {
     opacity: 1;
 }
 /* End box-user */
