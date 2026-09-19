@@ -40,9 +40,6 @@ const io = new Server(server, {
     }
 });
 global._io = io;
-
-// Load socket handlers
-require('./sockets/clients/chat.socket')(io);
 //End SocketIO
 
 
