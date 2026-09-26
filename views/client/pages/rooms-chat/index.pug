@@ -17,18 +17,19 @@ block main
                 ) Tạo phòng chat
 
         .row
-            .col-6
-                .box-room
-                    .inner-avatar
-                        img(
-                            src="https://robohash.org/hicveldicta.png"
-                            alt="Phòng abc"
-                        )
+            each room in listRoomChat
+                .col-6
+                    .box-room
+                        .inner-avatar
+                            img(
+                                src="https://robohash.org/hicveldicta.png"
+                                alt=room.title
+                            )
 
-                    .inner-info
-                        .inner-name Phòng abc
-                        .inner-buttons
-                            a(
-                                href=""
-                                class="btn btn-sm btn-primary m-1"
-                            ) Nhắn tin
+                        .inner-info
+                            .inner-name=room.title
+                            .inner-buttons
+                                a(
+                                    href=`/chat/${room._id}`
+                                    class="btn btn-sm btn-primary m-1"
+                                ) Nhắn tin
